@@ -4,8 +4,11 @@ import { useState, useEffect } from "react";
 import { useFilters } from "@/hooks/useFilters";
 
 export default function SearchBox() {
-  const { getFilters, setFilters } = useFilters();
-  const [value, setValue] = useState(getFilters().search || "");
+  const { filters, setFilters } = useFilters();
+
+  const [value, setValue] = useState(
+    filters.search || "",
+  );
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -13,7 +16,7 @@ export default function SearchBox() {
     }, 400);
 
     return () => clearTimeout(handler);
-  }, [value]);
+  }, [value, setFilters]);
 
   return (
     <input
