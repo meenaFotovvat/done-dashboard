@@ -17,7 +17,8 @@ export const columns: ColumnDef<Item>[] = [
   },
   {
     accessorKey: "name",
-    header: "Name",
+  header: "Name",
+  enableSorting: true,
   },
   {
     accessorKey: "category",
