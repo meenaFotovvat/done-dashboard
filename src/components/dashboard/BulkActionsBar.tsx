@@ -1,15 +1,46 @@
 "use client";
 
-import { useBulkStore } from "@/store/useBulkStore";
+import { useQueryClient } from "@tanstack/react-query";
+
+import { useTableStore } from "@/store/useTableStore";
+
+import { Item } from "@/lib/mockData";
 
 export default function BulkActionsBar() {
-  const { rowSelection, clear } = useBulkStore();
+  const queryClient = useQueryClient();
 
-  const selectedIds = Object.keys(rowSelection).filter(
-    (key) => rowSelection[key]
-  );
+  const {
+    rowSelection,
+    clearSelection,
+  } = useTableStore();
 
-  if (selectedIds.length === 0) return null;
+  const selectedIds = Object.keys(
+    rowSelection
+  ).filter((id) => rowSelection[id]);
+
+  if (selectedIds.length === 0) {
+    return null;
+  }
+
+  const markSelectedAsActive = () => {
+    queryClient.setQueryData<Item[]>(
+      ["items"],
+      (oldData = []) => {
+        return oldData.map((item) => {
+          if (selectedIds.includes(item.id)) {
+            return {
+              ...item,
+              status: "active",
+            };
+          }
+
+          return item;
+        });
+      }
+    );
+
+    clearSelection();
+  };
 
   return (
     <div className="flex items-center gap-3 rounded bg-gray-100 p-2">
@@ -18,14 +49,15 @@ export default function BulkActionsBar() {
       </span>
 
       <button
+        onClick={markSelectedAsActive}
         className="rounded bg-green-500 px-3 py-1 text-white"
       >
         Mark Active
       </button>
 
       <button
+        onClick={clearSelection}
         className="rounded bg-gray-500 px-3 py-1 text-white"
-        onClick={clear}
       >
         Clear
       </button>
