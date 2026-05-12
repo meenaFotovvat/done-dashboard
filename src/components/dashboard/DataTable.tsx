@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
 import {
   ColumnDef,
@@ -24,10 +24,13 @@ export default function DataTable<T extends { id: string }>({
   columns,
 }: DataTableProps<T>) {
 const columnWidth = 180;
-  const setSelected = useBulkStore((s) => s.setSelected);
+  const rowSelection = useBulkStore(
+  (s) => s.rowSelection
+);
 
-  const [rowSelection, setRowSelection] =
-    useState<RowSelectionState>({});
+const setRowSelection = useBulkStore(
+  (s) => s.setRowSelection
+);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -42,19 +45,13 @@ const columnWidth = 180;
     enableRowSelection: true,
 
     onRowSelectionChange: (updater) => {
-      const nextSelection =
-        typeof updater === "function"
-          ? updater(rowSelection)
-          : updater;
+  const nextSelection =
+    typeof updater === "function"
+      ? updater(rowSelection)
+      : updater;
 
-      setRowSelection(nextSelection);
-
-      const selectedIds = Object.keys(nextSelection).filter(
-        (key) => nextSelection[key]
-      );
-
-      setSelected(selectedIds);
-    },
+  setRowSelection(nextSelection);
+},
 
     getCoreRowModel: getCoreRowModel(),
 

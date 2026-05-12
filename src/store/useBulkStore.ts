@@ -1,24 +1,25 @@
 import { create } from "zustand";
 
-type BulkState = {
-  selectedIds: string[];
-  setSelected: (ids: string[]) => void;
+type BulkStore = {
+  rowSelection: Record<string, boolean>;
+
+  setRowSelection: (
+    value: Record<string, boolean>
+  ) => void;
+
   clear: () => void;
-  markAsActive: () => void;
 };
 
-export const useBulkStore = create<BulkState>((set, get) => ({
-  selectedIds: [],
+export const useBulkStore = create<BulkStore>((set) => ({
+  rowSelection: {},
 
-  setSelected: (ids) => set({ selectedIds: ids }),
+  setRowSelection: (value) =>
+    set({
+      rowSelection: value,
+    }),
 
-  clear: () => set({ selectedIds: [] }),
-
-  markAsActive: () => {
-    const { selectedIds } = get();
-
-    console.log("Mock update for:", selectedIds);
-
-    set({ selectedIds: [] });
-  },
+  clear: () =>
+    set({
+      rowSelection: {},
+    }),
 }));
