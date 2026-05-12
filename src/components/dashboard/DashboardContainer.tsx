@@ -1,22 +1,24 @@
 "use client";
 
 import { useMemo } from "react";
-import { useItems } from "@/hooks/useItems";
 import { useFilters } from "@/hooks/useFilters";
+import { useItems } from "@/hooks/useItems";
 
 import DataTable from "./DataTable";
 import TableToolbar from "./TableToolbar";
+import { columns } from "./columns";
 
 export default function DashboardContainer() {
-  console.log("DashboardContainer render");
-  const { data = [] } = useItems();
+  const { data: items = [] } = useItems();
+
   const { filters } = useFilters();
 
   const filteredData = useMemo(() => {
-    return data.filter((item) => {
+    return items.filter((item) => {
+      const search = (filters.search ?? "").toLowerCase();
+
       const searchMatch =
-        !filters.search ||
-        item.name.toLowerCase().includes(filters.search.toLowerCase());
+        !filters.search || item.name.toLowerCase().includes(search);
 
       const categoryMatch =
         !filters.category || item.category === filters.category;
@@ -26,12 +28,12 @@ export default function DashboardContainer() {
 
       return searchMatch && categoryMatch && statusMatch;
     });
-  }, [data, filters]);
+  }, [items, filters.search, filters.category, filters.status]);
 
   return (
     <div className="space-y-4">
       <TableToolbar />
-      <DataTable data={filteredData} />
+      <DataTable data={filteredData} columns={columns} />
     </div>
   );
 }
