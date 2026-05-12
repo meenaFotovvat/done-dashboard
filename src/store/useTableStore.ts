@@ -1,20 +1,23 @@
 import { create } from "zustand";
 
-type State = {
-  selectedIds: string[];
-  toggleSelect: (id: string) => void;
+type TableStore = {
+  rowSelection: Record<string, boolean>;
+
+  setRowSelection: (value: Record<string, boolean>) => void;
+
   clearSelection: () => void;
 };
 
-export const useTableStore = create<State>((set) => ({
-  selectedIds: [],
+export const useTableStore = create<TableStore>((set) => ({
+  rowSelection: {},
 
-  toggleSelect: (id) =>
-    set((state) => ({
-      selectedIds: state.selectedIds.includes(id)
-        ? state.selectedIds.filter((x) => x !== id)
-        : [...state.selectedIds, id],
-    })),
+  setRowSelection: (value) =>
+    set({
+      rowSelection: value,
+    }),
 
-  clearSelection: () => set({ selectedIds: [] }),
+  clearSelection: () =>
+    set({
+      rowSelection: {},
+    }),
 }));
