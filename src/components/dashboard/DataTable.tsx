@@ -61,9 +61,6 @@ const columnWidth = 180;
     getRowId: (row) => row.id,
   });
 
-  const totalTableWidth = table.getAllColumns().length * columnWidth;
-
-
   const rows = table.getRowModel().rows;
 
   const rowVirtualizer = useVirtualizer({
@@ -84,9 +81,7 @@ const columnWidth = 180;
         className="h-[600px] overflow-auto"
       >
         {/* Header */}
-        <div style={{
-    width: totalTableWidth,
-  }}   className="sticky top-0 z-10 flex border-b bg-gray-50">
+        <div className="sticky top-0 z-10 flex border-b bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) =>
             headerGroup.headers.map((header) => (
               <div
@@ -112,7 +107,7 @@ className="px-3 py-2 font-medium shrink-0"              >
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
             position: "relative",
-             width: totalTableWidth,
+             width: "max-content",
           }}
         >
           {rowVirtualizer
@@ -123,11 +118,10 @@ className="px-3 py-2 font-medium shrink-0"              >
               return (
                 <div
                   key={row.id}
-                  className="absolute flex border-b"
-style={{
-  transform: `translateY(${virtualRow.start}px)`,
-  width: totalTableWidth,
-}}
+                  className="absolute flex w-full border-b bg-white"
+                  style={{
+                    transform: `translateY(${virtualRow.start}px)`,
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <div
