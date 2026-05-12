@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+
 import {
   ColumnDef,
   RowSelectionState,
@@ -8,6 +9,9 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+
+import { useVirtualizer } from "@tanstack/react-virtual";
+
 import { useBulkStore } from "@/store/useBulkStore";
 
 type DataTableProps<T extends { id: string }> = {
@@ -19,22 +23,31 @@ export default function DataTable<T extends { id: string }>({
   data,
   columns,
 }: DataTableProps<T>) {
+const columnWidth = 180;
   const setSelected = useBulkStore((s) => s.setSelected);
 
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [rowSelection, setRowSelection] =
+    useState<RowSelectionState>({});
+
+  const parentRef = useRef<HTMLDivElement>(null);
 
   const table = useReactTable({
     data,
     columns,
-    state: { rowSelection },
+
+    state: {
+      rowSelection,
+    },
+
     enableRowSelection: true,
 
-    // ✅ باگ انتخاب رفع شد
     onRowSelectionChange: (updater) => {
-      setRowSelection(updater);
-
       const nextSelection =
-        typeof updater === "function" ? updater(rowSelection) : updater;
+        typeof updater === "function"
+          ? updater(rowSelection)
+          : updater;
+
+      setRowSelection(nextSelection);
 
       const selectedIds = Object.keys(nextSelection).filter(
         (key) => nextSelection[key]
@@ -45,45 +58,97 @@ export default function DataTable<T extends { id: string }>({
 
     getCoreRowModel: getCoreRowModel(),
 
-    // ✅ این باعث می‌شود selection بر اساس id واقعی آیتم باشد
     getRowId: (row) => row.id,
+  });
+
+  const totalTableWidth = table.getAllColumns().length * columnWidth;
+
+
+  const rows = table.getRowModel().rows;
+
+  const rowVirtualizer = useVirtualizer({
+    count: rows.length,
+
+    getScrollElement: () => parentRef.current,
+
+    estimateSize: () => 48,
+
+    overscan: 10,
   });
 
   return (
     <div className="rounded border">
-      <table className="w-full text-sm">
-        <thead className="bg-gray-50">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="px-3 py-2 text-left">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
+      {/* Scroll Container */}
+      <div
+        ref={parentRef}
+        className="h-[600px] overflow-auto"
+      >
+        {/* Header */}
+        <div style={{
+    width: totalTableWidth,
+  }}   className="sticky top-0 z-10 flex border-b bg-gray-50">
+          {table.getHeaderGroups().map((headerGroup) =>
+            headerGroup.headers.map((header) => (
+              <div
+              style={{
+  width: columnWidth,
+  minWidth: columnWidth,
+}}
+                key={header.id}
+className="px-3 py-2 font-medium shrink-0"              >
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+              </div>
+            ))
+          )}
+        </div>
 
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-t">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="px-3 py-2">
-                  {flexRender(
-                    cell.column.columnDef.cell,
-                    cell.getContext()
-                  )}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        {/* Virtualized Body */}
+        <div
+          style={{
+            height: `${rowVirtualizer.getTotalSize()}px`,
+            position: "relative",
+             width: totalTableWidth,
+          }}
+        >
+          {rowVirtualizer
+            .getVirtualItems()
+            .map((virtualRow) => {
+              const row = rows[virtualRow.index];
+
+              return (
+                <div
+                  key={row.id}
+                  className="absolute flex border-b"
+style={{
+  transform: `translateY(${virtualRow.start}px)`,
+  width: totalTableWidth,
+}}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <div
+                      key={cell.id}
+                      style={{
+  width: columnWidth,
+  minWidth: columnWidth,
+}}
+className="shrink-0 px-3 py-2"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+        </div>
+      </div>
     </div>
   );
 }
