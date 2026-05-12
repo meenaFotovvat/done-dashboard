@@ -4,15 +4,13 @@ import React, { useRef } from "react";
 
 import {
   ColumnDef,
-  RowSelectionState,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
-
-import { useBulkStore } from "@/store/useBulkStore";
+import { useTableStore } from "@/store/useTableStore";
 
 type DataTableProps<T extends { id: string }> = {
   data: T[];
@@ -23,14 +21,10 @@ export default function DataTable<T extends { id: string }>({
   data,
   columns,
 }: DataTableProps<T>) {
-const columnWidth = 180;
-  const rowSelection = useBulkStore(
-  (s) => s.rowSelection
-);
+  const columnWidth = 180;
+  const rowSelection = useTableStore((s) => s.rowSelection);
 
-const setRowSelection = useBulkStore(
-  (s) => s.setRowSelection
-);
+  const setRowSelection = useTableStore((s) => s.setRowSelection);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -45,13 +39,11 @@ const setRowSelection = useBulkStore(
     enableRowSelection: true,
 
     onRowSelectionChange: (updater) => {
-  const nextSelection =
-    typeof updater === "function"
-      ? updater(rowSelection)
-      : updater;
+      const nextSelection =
+        typeof updater === "function" ? updater(rowSelection) : updater;
 
-  setRowSelection(nextSelection);
-},
+      setRowSelection(nextSelection);
+    },
 
     getCoreRowModel: getCoreRowModel(),
 
@@ -73,21 +65,19 @@ const setRowSelection = useBulkStore(
   return (
     <div className="rounded border">
       {/* Scroll Container */}
-      <div
-        ref={parentRef}
-        className="h-[600px] overflow-auto"
-      >
+      <div ref={parentRef} className="h-[600px] overflow-auto">
         {/* Header */}
         <div className="sticky top-0 z-10 flex border-b bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) =>
             headerGroup.headers.map((header) => (
               <div
-              style={{
-  width: columnWidth,
-  minWidth: columnWidth,
-}}
+                style={{
+                  width: columnWidth,
+                  minWidth: columnWidth,
+                }}
                 key={header.id}
-className="px-3 py-2 font-medium shrink-0"              >
+                className="shrink-0 px-3 py-2 font-medium"
+              >
                 {header.isPlaceholder
                   ? null
                   : flexRender(
@@ -104,40 +94,35 @@ className="px-3 py-2 font-medium shrink-0"              >
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
             position: "relative",
-             width: "max-content",
+            width: "max-content",
           }}
         >
-          {rowVirtualizer
-            .getVirtualItems()
-            .map((virtualRow) => {
-              const row = rows[virtualRow.index];
+          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            const row = rows[virtualRow.index];
 
-              return (
-                <div
-                  key={row.id}
-                  className="absolute flex w-full border-b bg-white"
-                  style={{
-                    transform: `translateY(${virtualRow.start}px)`,
-                  }}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <div
-                      key={cell.id}
-                      style={{
-  width: columnWidth,
-  minWidth: columnWidth,
-}}
-className="shrink-0 px-3 py-2"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </div>
-                  ))}
-                </div>
-              );
-            })}
+            return (
+              <div
+                key={row.id}
+                className="absolute flex w-full border-b bg-white"
+                style={{
+                  transform: `translateY(${virtualRow.start}px)`,
+                }}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <div
+                    key={cell.id}
+                    style={{
+                      width: columnWidth,
+                      minWidth: columnWidth,
+                    }}
+                    className="shrink-0 px-3 py-2"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </div>
+                ))}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
