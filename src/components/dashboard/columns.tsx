@@ -17,19 +17,22 @@ export const columns: ColumnDef<Item>[] = [
   },
   {
     accessorKey: "name",
-  header: "Name",
-  enableSorting: true,
+    header: "Name",
+    size: 220,
   },
   {
     accessorKey: "category",
     header: "Category",
+    size: 160,
   },
   {
     accessorKey: "status",
     header: "Status",
+    size: 120,
   },
   {
     accessorKey: "email",
     header: "Email",
+    size: 320,
   },
 ];

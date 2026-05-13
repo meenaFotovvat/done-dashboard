@@ -21,7 +21,6 @@ export default function DataTable<T extends { id: string }>({
   data,
   columns,
 }: DataTableProps<T>) {
-  const columnWidth = 180;
   const rowSelection = useTableStore((s) => s.rowSelection);
 
   const setRowSelection = useTableStore((s) => s.setRowSelection);
@@ -67,16 +66,16 @@ export default function DataTable<T extends { id: string }>({
       {/* Scroll Container */}
       <div ref={parentRef} className="h-[600px] overflow-auto">
         {/* Header */}
-        <div className="sticky top-0 z-10 flex border-b bg-gray-50">
+        <div className="sticky top-0 z-10 flex w-max border-b bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) =>
             headerGroup.headers.map((header) => (
               <div
-                style={{
-                  width: columnWidth,
-                  minWidth: columnWidth,
-                }}
                 key={header.id}
                 className="shrink-0 px-3 py-2 font-medium"
+                style={{
+                  width: header.getSize(),
+                  minWidth: header.getSize(),
+                }}
               >
                 {header.isPlaceholder
                   ? null
@@ -94,8 +93,8 @@ export default function DataTable<T extends { id: string }>({
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
             position: "relative",
-            width: "max-content",
           }}
+          className="w-max"
         >
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
             const row = rows[virtualRow.index];
@@ -103,7 +102,7 @@ export default function DataTable<T extends { id: string }>({
             return (
               <div
                 key={row.id}
-                className="absolute flex w-full border-b bg-white"
+                className="absolute flex border-b bg-white"
                 style={{
                   transform: `translateY(${virtualRow.start}px)`,
                 }}
@@ -111,11 +110,11 @@ export default function DataTable<T extends { id: string }>({
                 {row.getVisibleCells().map((cell) => (
                   <div
                     key={cell.id}
+                    className="shrink-0 px-3 py-2 whitespace-nowrap"
                     style={{
-                      width: columnWidth,
-                      minWidth: columnWidth,
+                      width: cell.column.getSize(),
+                      minWidth: cell.column.getSize(),
                     }}
-                    className="shrink-0 px-3 py-2"
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </div>
