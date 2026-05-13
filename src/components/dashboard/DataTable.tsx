@@ -8,13 +8,14 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import type { RowData } from "@tanstack/react-table";
 
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useTableStore } from "@/store/useTableStore";
 
-type DataTableProps<T extends { id: string }> = {
+type DataTableProps<T extends RowData> = {
   data: T[];
-  columns: ColumnDef<T, any>[];
+  columns: ColumnDef<T, unknown>[];
 };
 
 export default function DataTable<T extends { id: string }>({
