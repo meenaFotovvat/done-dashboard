@@ -7,39 +7,65 @@ A high-performance data dashboard built with Next.js 15 for managing large-scale
 This project demonstrates how to build a scalable and performance-optimized admin dashboard capable of handling large datasets while maintaining a smooth user experience.
 
 Key focus areas:
+
 State synchronization with URL
+
 Performance optimization at scale
+
 Clean architecture and separation of concerns
+
 Predictable state management
 
 🟨 ✨ Core Features
+
 📊 Data Layer
+
 Generates 1000+ mock records using Faker
+
 Deterministic dataset (seeded)
+
 Cached via React Query
 
 🔎 Smart Filtering System
+
 Debounced search input (400ms)
+
 Multi-filter support:
+
 Category
+
 Status
+
 Text search
+
 All filters synchronized with URL
 
+
 🔗 URL State Persistence
+
 Full state encoded in query parameters
+
 Shareable links preserve UI state
+
 Reload-safe and bookmark-friendly
 
+
 ⚡ Performance Optimization
+
 Virtualized rendering using @tanstack/react-virtual
+
 Memoized filtering logic (useMemo)
+
 Minimal re-render strategy
+
 Efficient React Query caching
 
 ✅ Row Selection System
+
 Multi-row selection via checkboxes
+
 Global state handled with Zustand
+
 Persistent selection across UI updates
 
 🧩 Bulk Actions
