@@ -18,7 +18,6 @@ Generates 1000+ mock records using Faker
 Deterministic dataset (seeded)
 Cached via React Query
 
-
 🔎 Smart Filtering System
 Debounced search input (400ms)
 Multi-filter support:
@@ -63,6 +62,7 @@ Hybrid state management strategy
 Performance-first rendering approach
 
 🟧 🧠 Data Flow
+
 1. Fetch mock data (React Query)
 2. Read filters from URL
 3. Apply memoized filtering
@@ -80,7 +80,6 @@ Filters
 Table results
 UI consistency
 
-
 🟦 ⚙️ Getting Started
 npm install
 npm run dev
@@ -89,7 +88,6 @@ or
 
 yarn install
 yarn dev
-
 
 🟩 🧱 Tech Stack
 Next.js 15 (App Router)
@@ -104,30 +102,29 @@ Faker.js
 
 🟨 📁 Project Structure
 app/
-  layout.tsx
-  page.tsx
+layout.tsx
+page.tsx
 
 components/dashboard/
-  DashboardContainer.tsx
-  DataTable.tsx
-  TableToolbar.tsx
-  SearchBox.tsx
-  CategoryFilter.tsx
-  StatusFilter.tsx
-  BulkActionsBar.tsx
-  columns.tsx
+DashboardContainer.tsx
+DataTable.tsx
+TableToolbar.tsx
+SearchBox.tsx
+CategoryFilter.tsx
+StatusFilter.tsx
+BulkActionsBar.tsx
+columns.tsx
 
 hooks/
-  useFilters.ts
-  useItems.ts
+useFilters.ts
+useItems.ts
 
 lib/
-  mockData.ts
-  urlSync.ts
+mockData.ts
+urlSync.ts
 
 store/
-  useTableStore.ts
-
+useTableStore.ts
 
 🟪 📌 Key Design Decisions
 URL as the single source of truth for filters
@@ -138,7 +135,6 @@ React Query → Server/cache state
 Virtualization for large dataset performance
 Separation of UI and data concerns
 
-
 🟧 🚀 Possible Improvements
 Server-side filtering & pagination
 Web Worker-based filtering for heavy datasets
@@ -147,14 +143,12 @@ Error & loading UI states (skeletons, fallback UI)
 URL state validation & sanitization
 Minor performance optimizations
 
-
 🧠 What This Project Demonstrates
 Handling large datasets efficiently
 Advanced state synchronization patterns
 Production-level React architecture
 Performance optimization techniques
 Clean and scalable code structure
-
 
 🟦 🔍 Summary
 This dashboard is designed as a production-grade admin panel prototype that demonstrates how to combine performance, scalability, and clean architecture in a real-world frontend system.

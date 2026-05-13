@@ -9,44 +9,36 @@ import { Item } from "@/lib/mockData";
 export default function BulkActionsBar() {
   const queryClient = useQueryClient();
 
-  const {
-    rowSelection,
-    clearSelection,
-  } = useTableStore();
+  const { rowSelection, clearSelection } = useTableStore();
 
-  const selectedIds = Object.keys(
-    rowSelection
-  ).filter((id) => rowSelection[id]);
+  const selectedIds = Object.keys(rowSelection).filter(
+    (id) => rowSelection[id]
+  );
 
   if (selectedIds.length === 0) {
     return null;
   }
 
   const markSelectedAsActive = () => {
-    queryClient.setQueryData<Item[]>(
-      ["items"],
-      (oldData = []) => {
-        return oldData.map((item) => {
-          if (selectedIds.includes(item.id)) {
-            return {
-              ...item,
-              status: "active",
-            };
-          }
+    queryClient.setQueryData<Item[]>(["items"], (oldData = []) => {
+      return oldData.map((item) => {
+        if (selectedIds.includes(item.id)) {
+          return {
+            ...item,
+            status: "active",
+          };
+        }
 
-          return item;
-        });
-      }
-    );
+        return item;
+      });
+    });
 
     clearSelection();
   };
 
   return (
     <div className="flex items-center gap-3 rounded bg-gray-100 p-2">
-      <span className="text-sm font-medium">
-        {selectedIds.length} selected
-      </span>
+      <span className="text-sm font-medium">{selectedIds.length} selected</span>
 
       <button
         onClick={markSelectedAsActive}

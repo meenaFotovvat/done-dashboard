@@ -23,8 +23,7 @@ export default function DashboardContainer() {
       const categoryMatch =
         !filters.category || item.category === filters.category;
 
-      const statusMatch =
-        !filters.status || item.status === filters.status;
+      const statusMatch = !filters.status || item.status === filters.status;
 
       return searchMatch && categoryMatch && statusMatch;
     });

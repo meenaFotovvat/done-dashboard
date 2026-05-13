@@ -8,22 +8,28 @@ export const useFilters = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const filters = useMemo<Filters>(() => ({
-    search: searchParams.get("search") || "",
-    category: searchParams.get("category") || "",
-    status: searchParams.get("status") || "",
-  }), [searchParams]);
+  const filters = useMemo<Filters>(
+    () => ({
+      search: searchParams.get("search") || "",
+      category: searchParams.get("category") || "",
+      status: searchParams.get("status") || "",
+    }),
+    [searchParams]
+  );
 
-  const setFilters = useCallback((newFilters: Partial<Filters>) => {
-    const next = { ...filters, ...newFilters };
+  const setFilters = useCallback(
+    (newFilters: Partial<Filters>) => {
+      const next = { ...filters, ...newFilters };
 
-    const nextQuery = createQueryString(next);
-    const currentQuery = createQueryString(filters);
+      const nextQuery = createQueryString(next);
+      const currentQuery = createQueryString(filters);
 
-    if (nextQuery === currentQuery) return;
+      if (nextQuery === currentQuery) return;
 
-    router.replace(`?${nextQuery}`);
-  }, [filters, router]);
+      router.replace(`?${nextQuery}`);
+    },
+    [filters, router]
+  );
 
   return { filters, setFilters };
 };

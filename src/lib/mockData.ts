@@ -9,7 +9,7 @@ export type Item = {
 };
 
 export const generateMockData = (count = 1000): Item[] => {
-  faker.seed(12345); 
+  faker.seed(12345);
   return Array.from({ length: count }).map(() => ({
     id: faker.string.uuid(),
     name: faker.person.fullName(),

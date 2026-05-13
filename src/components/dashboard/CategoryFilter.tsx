@@ -8,10 +8,8 @@ export default function CategoryFilter() {
   return (
     <select
       value={filters.category || ""}
-      onChange={(e) =>
-        setFilters({ category: e.target.value })
-      }
-      className="border p-2 rounded"
+      onChange={(e) => setFilters({ category: e.target.value })}
+      className="rounded border p-2"
     >
       <option value="">All</option>
       <option value="Movies">Movies</option>

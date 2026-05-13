@@ -6,9 +6,7 @@ import { useFilters } from "@/hooks/useFilters";
 export default function SearchBox() {
   const { filters, setFilters } = useFilters();
 
-  const [value, setValue] = useState(
-    filters.search || "",
-  );
+  const [value, setValue] = useState(filters.search || "");
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -20,7 +18,7 @@ export default function SearchBox() {
 
   return (
     <input
-      className="border p-2 rounded w-full"
+      className="w-full rounded border p-2"
       placeholder="Search..."
       value={value}
       onChange={(e) => setValue(e.target.value)}
