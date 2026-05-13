@@ -1,36 +1,159 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🟦 Done Dashboard
 
-## Getting Started
+A high-performance data dashboard built with Next.js 15 for managing large-scale datasets with advanced filtering, URL-synced state, virtualization, and bulk interactions.
 
-First, run the development server:
+🟩 🚀 Overview
 
-```bash
+This project demonstrates how to build a scalable and performance-optimized admin dashboard capable of handling large datasets while maintaining a smooth user experience.
+
+Key focus areas:
+State synchronization with URL
+Performance optimization at scale
+Clean architecture and separation of concerns
+Predictable state management
+
+🟨 ✨ Core Features
+📊 Data Layer
+Generates 1000+ mock records using Faker
+Deterministic dataset (seeded)
+Cached via React Query
+
+
+🔎 Smart Filtering System
+Debounced search input (400ms)
+Multi-filter support:
+Category
+Status
+Text search
+All filters synchronized with URL
+
+🔗 URL State Persistence
+Full state encoded in query parameters
+Shareable links preserve UI state
+Reload-safe and bookmark-friendly
+
+⚡ Performance Optimization
+Virtualized rendering using @tanstack/react-virtual
+Memoized filtering logic (useMemo)
+Minimal re-render strategy
+Efficient React Query caching
+
+✅ Row Selection System
+Multi-row selection via checkboxes
+Global state handled with Zustand
+Persistent selection across UI updates
+
+🧩 Bulk Actions
+Mark selected rows as active
+Clear selection instantly
+Optimistic updates via React Query cache manipulation
+
+🟪 🏗️ Architecture Highlights
+This project follows a modular and scalable structure:
+
+UI Layer → React Components
+State Layer → Zustand + URL state
+Data Layer → React Query
+Utility Layer → URL sync helpers
+
+Design principles:
+Separation of concerns
+Single source of truth for filters (URL)
+Hybrid state management strategy
+Performance-first rendering approach
+
+🟧 🧠 Data Flow
+1. Fetch mock data (React Query)
+2. Read filters from URL
+3. Apply memoized filtering
+4. Render table via React Table
+5. Virtualize rows for performance
+6. Manage selection via Zustand
+7. Apply bulk updates via cache mutation
+
+🟥 🔗 URL State Example
+?search=john&category=Movies&status=active
+
+This URL fully restores:
+Search state
+Filters
+Table results
+UI consistency
+
+
+🟦 ⚙️ Getting Started
+npm install
 npm run dev
-# or
+
+or
+
+yarn install
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🟩 🧱 Tech Stack
+Next.js 15 (App Router)
+React 18
+TypeScript
+TanStack React Table
+TanStack React Query
+TanStack Virtual
+Zustand
+Tailwind CSS
+Faker.js
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🟨 📁 Project Structure
+app/
+  layout.tsx
+  page.tsx
 
-## Learn More
+components/dashboard/
+  DashboardContainer.tsx
+  DataTable.tsx
+  TableToolbar.tsx
+  SearchBox.tsx
+  CategoryFilter.tsx
+  StatusFilter.tsx
+  BulkActionsBar.tsx
+  columns.tsx
 
-To learn more about Next.js, take a look at the following resources:
+hooks/
+  useFilters.ts
+  useItems.ts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+lib/
+  mockData.ts
+  urlSync.ts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+store/
+  useTableStore.ts
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🟪 📌 Key Design Decisions
+URL as the single source of truth for filters
+Hybrid state management:
+URL → Filters
+Zustand → UI state
+React Query → Server/cache state
+Virtualization for large dataset performance
+Separation of UI and data concerns
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+🟧 🚀 Possible Improvements
+Server-side filtering & pagination
+Column sorting with URL sync
+Persistent selection across refresh
+Web Worker-based filtering
+Role-based actions (admin panel extension)
+
+
+🧠 What This Project Demonstrates
+Handling large datasets efficiently
+Advanced state synchronization patterns
+Production-level React architecture
+Performance optimization techniques
+Clean and scalable code structure
+
+
+🟦 🔍 Summary
+This dashboard is designed as a production-grade admin panel prototype that demonstrates how to combine performance, scalability, and clean architecture in a real-world frontend system.
