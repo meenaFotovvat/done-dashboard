@@ -141,10 +141,11 @@ Separation of UI and data concerns
 
 🟧 🚀 Possible Improvements
 Server-side filtering & pagination
-Column sorting with URL sync
-Persistent selection across refresh
-Web Worker-based filtering
+Web Worker-based filtering for heavy datasets
 Role-based actions (admin panel extension)
+Error & loading UI states (skeletons, fallback UI)
+URL state validation & sanitization
+Minor performance optimizations
 
 
 🧠 What This Project Demonstrates
