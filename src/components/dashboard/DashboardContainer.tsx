@@ -30,6 +30,8 @@ export default function DashboardContainer() {
     });
   }, [items, filters.search, filters.category, filters.status]);
 
+  const memoizedColumns = useMemo(() => columns, []);
+
   if (isLoading) {
     return <Loading />;
   }
@@ -41,7 +43,7 @@ export default function DashboardContainer() {
   return (
     <div className="space-y-4">
       <TableToolbar />
-      <DataTable data={filteredData} columns={columns} />
+      <DataTable data={filteredData} columns={memoizedColumns} />
     </div>
   );
 }
