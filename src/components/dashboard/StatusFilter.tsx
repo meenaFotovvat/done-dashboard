@@ -11,7 +11,7 @@ export default function StatusFilter() {
       onChange={(e) => setFilters({ status: e.target.value })}
       className="rounded border p-2"
     >
-      <option value="">All</option>
+      <option value="">status</option>
       <option value="active">Active</option>
       <option value="inactive">Inactive</option>
     </select>
