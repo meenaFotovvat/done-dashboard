@@ -9,6 +9,10 @@ export default function SearchBox() {
   const [value, setValue] = useState(filters.search || "");
 
   useEffect(() => {
+    setValue(filters.search || "");
+  }, [filters.search]);
+
+  useEffect(() => {
     const handler = setTimeout(() => {
       setFilters({ search: value });
     }, 400);
