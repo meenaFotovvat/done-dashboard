@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 
 import {
   ColumnDef,
@@ -50,7 +50,7 @@ export default function DataTable<T extends { id: string }>({
     getRowId: (row) => row.id,
   });
 
-  const rows = table.getRowModel().rows;
+  const rows = useMemo(() => table.getRowModel().rows, [table, data]);
 
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
