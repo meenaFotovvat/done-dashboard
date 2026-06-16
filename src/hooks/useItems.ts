@@ -5,6 +5,8 @@ export const useItems = () => {
   return useQuery({
     queryKey: ["items"],
     queryFn: async () => {
+      // simulate real API latency
+      await new Promise((res) => setTimeout(res, 800));
       return generateMockData(1000);
     },
     staleTime: Infinity,
