@@ -7,11 +7,12 @@ import { useItems } from "@/hooks/useItems";
 import DataTable from "./DataTable";
 import TableToolbar from "./TableToolbar";
 import { columns } from "./columns";
+import Loading from "../shared/Loading";
+import Error from "../shared/Error";
 
 export default function DashboardContainer() {
-  const { data: items = [] } = useItems();
-
   const { filters } = useFilters();
+  const { data: items = [], isLoading, isError } = useItems();
 
   const filteredData = useMemo(() => {
     return items.filter((item) => {
@@ -28,6 +29,14 @@ export default function DashboardContainer() {
       return searchMatch && categoryMatch && statusMatch;
     });
   }, [items, filters.search, filters.category, filters.status]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (isError) {
+    return <Error />;
+  }
 
   return (
     <div className="space-y-4">
