@@ -5,14 +5,16 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useTableStore } from "@/store/useTableStore";
 
 import { Item } from "@/lib/mockData";
+import { useMemo } from "react";
 
 export default function BulkActionsBar() {
   const queryClient = useQueryClient();
 
   const { rowSelection, clearSelection } = useTableStore();
 
-  const selectedIds = Object.keys(rowSelection).filter(
-    (id) => rowSelection[id]
+  const selectedIds = useMemo(
+    () => Object.keys(rowSelection).filter((id) => rowSelection[id]),
+    [rowSelection]
   );
 
   if (selectedIds.length === 0) {
