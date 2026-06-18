@@ -18,13 +18,16 @@ type DataTableProps<T extends RowData> = {
   columns: ColumnDef<T, unknown>[];
 };
 
-export default function DataTable<T extends { id: string }>({
-  data,
-  columns,
-}: DataTableProps<T>) {
-  const rowSelection = useTableStore((s) => s.rowSelection);
+export default function DataTable<
+  T extends { id: string },
+>({ data, columns }: DataTableProps<T>) {
+  const rowSelection = useTableStore(
+    (s) => s.rowSelection,
+  );
 
-  const setRowSelection = useTableStore((s) => s.setRowSelection);
+  const setRowSelection = useTableStore(
+    (s) => s.setRowSelection,
+  );
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -40,7 +43,9 @@ export default function DataTable<T extends { id: string }>({
 
     onRowSelectionChange: (updater) => {
       const nextSelection =
-        typeof updater === "function" ? updater(rowSelection) : updater;
+        typeof updater === "function"
+          ? updater(rowSelection)
+          : updater;
 
       setRowSelection(nextSelection);
     },
@@ -50,7 +55,10 @@ export default function DataTable<T extends { id: string }>({
     getRowId: (row) => row.id,
   });
 
-  const rows = useMemo(() => table.getRowModel().rows, [table, data]);
+  const rows = useMemo(
+    () => table.getRowModel().rows,
+    [table],
+  );
 
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
@@ -65,28 +73,36 @@ export default function DataTable<T extends { id: string }>({
   return (
     <div className="rounded border">
       {/* Scroll Container */}
-      <div ref={parentRef} className="h-[600px] overflow-auto">
+      <div
+        ref={parentRef}
+        className="h-150 overflow-auto"
+      >
         {/* Header */}
         <div className="sticky top-0 z-10 flex w-max border-b bg-gray-50">
-          {table.getHeaderGroups().map((headerGroup) =>
-            headerGroup.headers.map((header) => (
-              <div
-                key={header.id}
-                className="shrink-0 px-3 py-2 font-medium"
-                style={{
-                  width: header.getSize(),
-                  minWidth: header.getSize(),
-                }}
-              >
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </div>
-            ))
-          )}
+          {table
+            .getHeaderGroups()
+            .map((headerGroup) =>
+              headerGroup.headers.map(
+                (header) => (
+                  <div
+                    key={header.id}
+                    className="shrink-0 px-3 py-2 font-medium"
+                    style={{
+                      width: header.getSize(),
+                      minWidth: header.getSize(),
+                    }}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef
+                            .header,
+                          header.getContext(),
+                        )}
+                  </div>
+                ),
+              ),
+            )}
         </div>
 
         {/* Virtualized Body */}
@@ -97,32 +113,42 @@ export default function DataTable<T extends { id: string }>({
           }}
           className="w-max"
         >
-          {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-            const row = rows[virtualRow.index];
+          {rowVirtualizer
+            .getVirtualItems()
+            .map((virtualRow) => {
+              const row = rows[virtualRow.index];
 
-            return (
-              <div
-                key={row.id}
-                className="absolute flex border-b bg-white"
-                style={{
-                  transform: `translateY(${virtualRow.start}px)`,
-                }}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <div
-                    key={cell.id}
-                    className="shrink-0 px-3 py-2 whitespace-nowrap"
-                    style={{
-                      width: cell.column.getSize(),
-                      minWidth: cell.column.getSize(),
-                    }}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </div>
-                ))}
-              </div>
-            );
-          })}
+              return (
+                <div
+                  key={row.id}
+                  className="absolute flex border-b bg-white"
+                  style={{
+                    transform: `translateY(${virtualRow.start}px)`,
+                  }}
+                >
+                  {row
+                    .getVisibleCells()
+                    .map((cell) => (
+                      <div
+                        key={cell.id}
+                        className="shrink-0 px-3 py-2 whitespace-nowrap"
+                        style={{
+                          width:
+                            cell.column.getSize(),
+                          minWidth:
+                            cell.column.getSize(),
+                        }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef
+                            .cell,
+                          cell.getContext(),
+                        )}
+                      </div>
+                    ))}
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>
