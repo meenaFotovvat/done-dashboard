@@ -1,16 +1,20 @@
 "use client";
 
 import { useCategories } from "@/hooks/useCategories";
-import { useFilters } from "@/hooks/useFilters";
+import filterProps from "@/types/interface";
 
-export default function CategoryFilter() {
-  const { filters, setFilters } = useFilters();
+export default function CategoryFilter({
+  filters,
+  onChange,
+}: filterProps) {
   const categories = useCategories();
 
   return (
     <select
       value={filters.category || ""}
-      onChange={(e) => setFilters({ category: e.target.value })}
+      onChange={(e) =>
+        onChange({ category: e.target.value })
+      }
       className="rounded border p-2"
     >
       <option value="">category</option>

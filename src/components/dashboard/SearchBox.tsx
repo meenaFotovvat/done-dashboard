@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useFilters } from "@/hooks/useFilters";
+import filterProps from "@/types/interface";
 
-export default function SearchBox() {
-  const { filters, setFilters } = useFilters();
-
-  const [value, setValue] = useState(filters.search || "");
+export default function SearchBox({
+  filters,
+  onChange,
+}: filterProps) {
+  const [value, setValue] = useState(
+    filters.search || "",
+  );
 
   useEffect(() => {
     setValue(filters.search || "");
@@ -14,11 +17,11 @@ export default function SearchBox() {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setFilters({ search: value });
+      onChange({ search: value });
     }, 400);
 
     return () => clearTimeout(handler);
-  }, [value, setFilters]);
+  }, [value, onChange]);
 
   return (
     <input
